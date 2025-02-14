@@ -11,11 +11,11 @@ class UsuariosModel extends Model{
     protected $returnType     = 'array';
     protected $useSoftDeletes = false;
 
-    protected $allowedFields = ['usuario','password', 'nombre','id_caja','id_rol','activo'];
+    protected $allowedFields = ['usuario','password', 'nombre', 'telefono', 'email', 'id_rol', 'id_piso', 'id_apartamento', 'id_salon', 'horario_desde', 'horario_hasta', 'activo'];
 
     protected $useTimestamps = true;
-    protected $createdField  = 'fecha_alta';
-    protected $updatedField  = 'fecha_edit';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
     protected $deletedField  = '';
 
     protected $validationRules    = [];

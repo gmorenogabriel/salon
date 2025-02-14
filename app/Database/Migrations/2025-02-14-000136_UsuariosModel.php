@@ -42,6 +42,11 @@ class UsuariosModel extends Migration
                 'null' => false,
                 'unique' => true
             ],
+           'id_rol' => [
+                'type' => 'INT',
+                'constraint' => 3,
+                'unsigned' => true,
+            ],			
             'id_piso' => [
                 'type' => 'INT',
                 'constraint' => 3,

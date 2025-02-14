@@ -1,0 +1,21 @@
+abrir Git Bash
+git init
+git remote add origin git@github.com:gmorenogabriel/salon.git
+git remote -v
+
+//Agregar y confirmar los archivos
+git add .
+git commit -m "Primer commit: Salon-Reserva de Horas"
+
+//Subir el Proyecto a GitHub
+git branch -M main
+git push -u origin main
+
+// si dice algo diferente a "main" cambia de rama
+git branch
+
+//cambio de rama
+git checkout main
+
+//si la rama main no existe, crea y cambia a ella con:
+git branch -M main
