@@ -4,12 +4,12 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class UsuariosModel extends Migration
+class UsuariosMigrations extends Migration
 {
     public function up() 
     {
 	$this->forge->addField([
-            'id' => [
+            'id_usuario' => [
                 'type' => 'INT',
                 'constraint' => 11,
                 'unsigned' => true,
@@ -24,7 +24,6 @@ class UsuariosModel extends Migration
                 'type' => 'VARCHAR',
                 'constraint' => '255',
                 'null' => false,
-                'unique' => true
             ],			
             'nombre' => [
                 'type' => 'VARCHAR',
@@ -44,22 +43,27 @@ class UsuariosModel extends Migration
             ],
            'id_rol' => [
                 'type' => 'INT',
-                'constraint' => 3,
+                'constraint'=> 3,
                 'unsigned' => true,
+                'null'     => true, 
             ],			
             'id_piso' => [
                 'type' => 'INT',
                 'constraint' => 3,
                 'unsigned' => true,
+                'null'     => true, 
             ],						
             'id_apartamento' => [
-                'type' => 'VARCHAR',
-                'constraint' => 10,
+                'type' => 'INT',
+                'constraint' => 3,
+                'unsigned' => true,
+                'null'     => true, 
             ],			
             'id_salon' => [
                 'type' => 'INT',
                 'constraint' => 3,
-                'null' => false,
+                'unsigned' => true,
+                'null' => true,
             ],
             'horario_desde' => [
                 'type' => 'VARCHAR',
@@ -84,13 +88,26 @@ class UsuariosModel extends Migration
             ],		
             'created_at datetime default current_timestamp',
         ]); 
-        $this->forge->addPrimaryKey('id');
+        // Definir clave primaria
+        //$this->forge->addPrimaryKey('id_usuario');
+        $this->forge->addKey('id_usuario', true);
+
+        // Definimos clave foránea
+        $this->forge->addForeignKey('id_rol', 'roles', 'id_rol', 'CASCADE', 'SET NULL');
+        $this->forge->addForeignKey('id_piso', 'pisos', 'id_piso', 'CASCADE', 'SET NULL');
+        $this->forge->addForeignKey('id_salon', 'salones',  'id_salon', 'CASCADE', 'SET NULL');
+       // $this->forge->addForeignKey('id_apartamento', 'apartamentos',  'id_apartamento', 'CASCADE', 'SET NULL');        
+        
+        // Creamos la Tabla
         $this->forge->createTable('usuarios');
         }
 
         public function down()
         {
-                $this->forge->dropTable('usuarios');
+            $this->forge->dropForeignKey('usuarios', 'usuarios_id_rol_foreign');
+            $this->forge->dropForeignKey('usuarios', 'usuarios_id_piso_foreign');
+            $this->forge->dropForeignKey('usuarios', 'usuarios_id_salon_foreign');
+            $this->forge->dropTable('usuarios');
         }
 
 }

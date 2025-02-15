@@ -4,30 +4,31 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class ApartamentosModel extends Migration
+class ApartamentosMigrations extends Migration
 {
     public function up()
     {
      $this->forge->addField([
-            'id' => [
-                'type' => 'INT',
-                'constraint' => 11,
-                'unsigned' => true,
-                'auto_increment' => true,
+            'id_apartamento' => [
+                'type'              => 'INT',
+                'constraint'        => 3,
+                'unsigned'          => true,
+                'auto_increment'    => true,
+                'null'              => true,       
             ],
 			'apartamento' => [
                 'type' => 'VARCHAR',
                 'constraint' => 3,
-                'null' => false
+                'null'     => true, 
             ],	
             'descripcion' => [
                 'type' => 'VARCHAR',
                 'constraint' => '100',
-                'null' => false
+                'null' => true
             ],			
              'created_at datetime default current_timestamp',
         ]);
-        $this->forge->addPrimaryKey('id');
+        $this->forge->addPrimaryKey('id_apartamento');
         $this->forge->createTable('apartamentos');
         }
 

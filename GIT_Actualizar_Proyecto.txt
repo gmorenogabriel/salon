@@ -1,5 +1,15 @@
 abrir Git Bash
 git init
+//Agregar y confirmar los archivos
+git add .
+//Confirmar los cambios
+git commit -m "Primer commit: Salon-Reserva de Horas"
+//Subir el Proyecto a GitHub
+git branch -M main
+git push -u origin main
+
+
+
 git remote add origin git@github.com:gmorenogabriel/salon.git
 git remote -v
 

@@ -19,9 +19,9 @@ class PisosSeeder extends Seeder
             $update_at  = $faker->dateTimeBetween($created_at);
 
             $pisos[] = [
-					'piso'		  => $i,
-					'descripcion' => 'Piso ' . $i,
-         			'created_at'  => $created_at->format('Y-m-d H:i:s'), //$faker->dateTime(),
+					'id_piso'       => $i,
+					'descripcion'   => 'Piso ' . $i,
+         			'created_at'    => $created_at->format('Y-m-d H:i:s'), //$faker->dateTime(),
          //			'fecha_edit' => $update_at->format('Y-m-d H:i:s'), //$faker->dateTime(),
             ];
         }

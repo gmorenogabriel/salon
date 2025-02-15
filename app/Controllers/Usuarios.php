@@ -1,30 +1,36 @@
 <?php namespace App\Controllers;
 // Capitulo 5 Punto de venta con CI4, cajas, usuarios, inicio y cierre de sesión
 use App\Controllers\BaseController;
-use ReflectionMethod;
+// use ReflectionMethod;
 use CodeIgniter\I18n\Time;
 use App\Models\UsuariosModel;
 use App\Models\CajasModel;
 use App\Models\RolesModel;
+use App\Config\Salon;
 
 class Usuarios extends BaseController{
     protected $usuarios, $cajas, $roles;
     protected $reglas, $regalasLogin, $reglasCambia;
+    protected $configs, $fecha_hoy;
+    protected $clase;
+    //protected $myTime;
     public $threshold = 4;
 
 public function __construct(){
 
         $this->usuarios = new UsuariosModel();
+        $this->configs = config('Blog');
+
       //  $this->cajas = new CajasModel();
       //  $this->roles = new RolesModel();
         // Obtenemos la Fecha del Sistema
-        $myTime = Time::now('America/Montevideo', 'la_UY');
+        //$myTime = Time::now('America/Montevideo', 'la_UY');
         $today       = Time::createFromDate();            // Uses current year, month, and day
         $this->fecha_hoy  = $today->toLocalizedString('dd/MM/yyyy');   // March 9, 2016
         
         // Obtenemos el nombre del Controlador/Metodo
         $router = \Config\Services::router();
-        $_method = $router->methodName();
+        //$_method = $router->methodName();
         $_controller = $router->controllerName();         
         $controlador = explode('\\', $_controller);
         $this->clase = $controlador[max(array_keys($controlador))] ;       

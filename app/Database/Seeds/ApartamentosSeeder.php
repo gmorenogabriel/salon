@@ -36,7 +36,6 @@ class ApartamentosSeeder extends Seeder
 						$letra = "Desconocido";
 				}
 				$apartamentos[] = [
-				
 						'apartamento' => $i.$letra,
 						'descripcion' => 'Apartamento ' . $i.$letra,
 						'created_at'  => $created_at->format('Y-m-d H:i:s'), //$faker->dateTime(),

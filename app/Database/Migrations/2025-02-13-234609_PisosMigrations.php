@@ -4,16 +4,17 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class PisosModel extends Migration
+class PisosMigrations extends Migration
 {
     public function up()
     {
         $this->forge->addField([
-            'id' => [
-                'type' => 'INT',
-                'constraint' => 11,
-                'unsigned' => true,
-                'auto_increment' => true,
+            'id_piso' => [
+                'type'              => 'INT',
+                'constraint'        => 3,
+                'unsigned'          => true,
+                'auto_increment'    => true,
+                'null'              => true, 
             ],
 			'piso' => [
                 'type' => 'INT',
@@ -27,7 +28,7 @@ class PisosModel extends Migration
             ],			
              'created_at datetime default current_timestamp',
         ]);
-        $this->forge->addPrimaryKey('id');
+        $this->forge->addPrimaryKey('id_piso');
         $this->forge->createTable('pisos');
         }
 

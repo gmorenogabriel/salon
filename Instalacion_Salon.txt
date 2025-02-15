@@ -1,15 +1,16 @@
 //Instalacion desde Cero:
 
-php spark make:migration SalonesModel
-php spark make:migration PisosModel
-php spark make:migration ApartamentosModel
-php spark make:migration UsuariosModel
+php spark make:migration RolesMigrations
+php spark make:migration SalonesMigrations
+php spark make:migration PisosMigrations
+php spark make:migration ApartamentosMigrations
+php spark make:migration UsuariosMigrations
 
 
  dir    o     ls -la app/Database/Migrations/
 
 //Modificamos el archivo con los tipos y largos de las columnas, la clave, etc
-vi app/Database/Migrations/2025-01-19-204118_SweetMessageModel.php
+vi app/Database/Migrations/2025-01-19-204118_SweetMessageMigrations.php
 //Agregamos y modificamos los campos
 
 // Recordar, las Columnas VarChar no llevan "Unsigned null" da error
@@ -19,16 +20,19 @@ php spark migrate
 # Creamos datos de pruebas en las Tablas
 php spark make:seeder
 
+Seeder class name: RolesSeeder
 Seeder class name: SalonesSeeder
 Seeder class name: PisosSeeder
 Seeder class name: ApartamentosSeeder
 Seeder class name: UsuariosSeeder
 
 # Modificamos los Seeders y ejecutamos para cargar datos en las Tablas
+php spark db:seed RolesSeeder
 php spark db:seed SalonesSeeder
 php spark db:seed PisosSeeder
 php spark db:seed ApartamentosSeeder
 php spark db:seed UsuariosSeeder
+
 
 
 

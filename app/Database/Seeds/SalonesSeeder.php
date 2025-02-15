@@ -19,9 +19,9 @@ class SalonesSeeder extends Seeder
             $update_at  = $faker->dateTimeBetween($created_at);
 
             $salones[] = [
-					'salon'		  => $i,
-					'descripcion' => 'Salon ' . $i,
-         			'created_at'  => $created_at->format('Y-m-d H:i:s'), //$faker->dateTime(),
+					'id_salon'      => $i,
+					'descripcion'   => 'Salon ' . $i,
+         			'created_at'    => $created_at->format('Y-m-d H:i:s'), //$faker->dateTime(),
          //			'fecha_edit' => $update_at->format('Y-m-d H:i:s'), //$faker->dateTime(),
             ];
         }
