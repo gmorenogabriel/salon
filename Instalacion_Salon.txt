@@ -33,6 +33,16 @@ php spark db:seed PisosSeeder
 php spark db:seed ApartamentosSeeder
 php spark db:seed UsuariosSeeder
 
+//********************************
+php spark db:seed TodosLosSeeder
+
+# ahora generamos los Models
+php spark make:model RolesModel
+php spark make:model SalonesModel
+php spark make:model PisosSeeder
+php spark make:model ApartamentosSeeder
+php spark make:model UsuariosSeeder
+
 
 
 

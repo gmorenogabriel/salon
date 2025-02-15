@@ -4,22 +4,28 @@ use App\Controllers\BaseController;
 // use ReflectionMethod;
 use CodeIgniter\I18n\Time;
 use App\Models\UsuariosModel;
-use App\Models\CajasModel;
 use App\Models\RolesModel;
+use App\Models\PisosModel;
+use App\Models\SalonesModel;
+use App\Models\ApartamentosModel;
+
 use App\Config\Salon;
 
 class Usuarios extends BaseController{
-    protected $usuarios, $cajas, $roles;
-    protected $reglas, $regalasLogin, $reglasCambia;
+    protected $usuarios, $salones, $roles, $pisos, $apartamentos;
+    protected $reglas, $reglasLogin, $reglasCambia;
     protected $configs, $fecha_hoy;
-    protected $clase;
+    protected $clase, $funcion;
     //protected $myTime;
     public $threshold = 4;
 
 public function __construct(){
 
         $this->usuarios = new UsuariosModel();
-        $this->configs = config('Blog');
+        $this->salones  = new SalonesModel();
+        $this->roles    = new RolesModel();
+        $this->apartamentos= new ApartamentosModel();
+        $this->configs = config('Salon');
 
       //  $this->cajas = new CajasModel();
       //  $this->roles = new RolesModel();
@@ -34,6 +40,7 @@ public function __construct(){
         $_controller = $router->controllerName();         
         $controlador = explode('\\', $_controller);
         $this->clase = $controlador[max(array_keys($controlador))] ;       
+        $this->funcion= $router->methodName();
 
         helper(['form']);
         // Variables para nuestras reglas de validac.del Form
@@ -65,7 +72,7 @@ public function __construct(){
                     'required'=> 'El campo {field} es obligatorio.'
                     ]
                 ],                
-            'id_caja' => [               
+            'id_rol' => [               
                 'rules' => 'required',
                 'errors' =>  [
                     'required'=> 'El campo {field} es obligatorio.'
@@ -135,9 +142,11 @@ public function __construct(){
         echo view('footer');
     }
     public function nuevo(){
-        $cajas = $this->cajas->where('activo', 1)->findAll();
-        $roles = $this->roles->where('activo', 1)->findAll();
-        $data = ['titulo' => 'Agregar usuario', 'cajas' => $cajas, 'roles' => $roles ];
+        $pisos        = $this->pisos->where('activo', 1)->findAll();
+        $roles        = $this->roles->where('activo', 1)->findAll();
+        $salones      = $this->salones->where('activo', 1)->findAll();          
+        $apartamentos = $this->apartamentos->where('activo', 1)->findAll();                    
+        $data = ['titulo' => 'Agregar usuario', 'salones' => $salones, 'roles' => $roles, 'pisos' => $pisos, 'apartamentos' => $apartamentos ];
         
         echo view('header');
         echo view('usuarios/nuevo', $data);
@@ -151,18 +160,24 @@ public function __construct(){
 			'usuario' => $this->request->getPost('usuario'),
 			'password' => $hash,
 			'nombre' => $this->request->getPost('nombre'), 
-			'id_caja' => $this->request->getPost('id_caja'),
+		    'id_piso' => $this->request->getPost('id_piso'),
 			'id_rol' => $this->request->getPost('id_rol'),
+			'id_salon' => $this->request->getPost('id_salon'),            
+			'id_apartamento' => $this->request->getPost('id_apartamento'),             
 			'activo' => 1
 			]);
 		  return redirect()->to(base_url() . '/usuarios');
 	  }else{
 		  // a $data se deben agregar todos los arrays por ejemplo Cajas y Roles
-		  $cajas = $this->cajas->where('activo', 1)->findAll();
-		  $roles = $this->roles->where('activo', 1)->findAll();
+		  $pisos        = $this->pisos->where('activo', 1)->findAll();
+		  $roles        = $this->roles->where('activo', 1)->findAll();
+		  $salones      = $this->salones->where('activo', 1)->findAll();          
+		  $apartamentos = $this->apartamentos->where('activo', 1)->findAll();                    
 		  $data = ['titulo' => 'Agregar Unidad', 'validation' => $this->validator,
-			'cajas' => $cajas,
-			'roles' => $roles,
+			'pisos'         => $pisos,
+			'roles'         => $roles,
+			'salones'       => $salones,            
+			'apartamentos'  => $apartamentos,            
 		];
 		  echo view('header');
 		  echo view('usuarios/nuevo', $data);
@@ -170,12 +185,19 @@ public function __construct(){
 	  }        
     }
 
-    public function editar($id, $valid = null){
-        $usuario = $this->usuarios->where('id', $id)->where('activo', 1)->first();
+    public function editar($id_usuario, $valid = null){
+        $usuario        = $this->usuarios->where('id_usuario', $id_usuario)->where('activo', 1)->first();
+        $pisos          = $this->pisos->where('activo', 1)->where('activo', 1)->first();
+        $roles          = $this->roles->where('activo', 1)->findAll();
+        $salones        = $this->salones->where('activo', 1)->findAll();          
+        $apartamentos   = $this->apartamentos->where('activo', 1)->findAll();                    
+
         // a $data se deben agregar todos los arrays por ejemplo Cajas y Roles
-        $cajas = $this->cajas->where('activo', 1)->findAll();
-        $roles = $this->roles->where('activo', 1)->findAll();
-        $todosusu = $this->usuarios->where('activo', 1)->findAll();
+        $pisos          = $this->pisos->where('activo', 1)->findAll();
+        $roles          = $this->roles->where('activo', 1)->findAll();
+        $salones        = $this->salones->where('activo', 1)->findAll();          
+        $apartamentos   = $this->apartamentos->where('activo', 1)->findAll();                    
+        $todosusu       = $this->usuarios->where('activo', 1)->findAll();
 
         if($valid != null){
             $data = [
@@ -183,16 +205,20 @@ public function __construct(){
                 'un_usuario' => $usuario,
                 'todos_usuarios' => $todosusu,
                 'validation' => $valid,
-                'cajas' => $cajas,
+                'pisos' => $pisos,
                 'roles' => $roles,
+                'salones' => $salones,
+                'apartamentos'  => $apartamentos, 
             ];
         }else {
             $data = [
                 'titulo' => 'Editar '.$this->clase,
                 'un_usuario' => $usuario,
                 'todos_usuarios' => $todosusu,
-        	    'cajas' => $cajas,
-			    'roles' => $roles,
+                'pisos' => $pisos,
+                'roles' => $roles,
+                'salones' => $salones,
+                'apartamentos'  => $apartamentos, 
         ];
         
 
@@ -263,8 +289,7 @@ public function __construct(){
         echo view('login');
     }
     public function valida(){
-      
-	    log_message('debug', 'Funcion valida.');
+        log_message('info', $this->clase . '/' . $this->funcion . ' Línea: ' . __LINE__ . "Ingrese a la funcion ");      
         $cache = cache();
         $test = cache('test');
 
@@ -277,23 +302,29 @@ public function __construct(){
 
 $usuario  = $this->request->getPost('usuario');
 $password = $this->request->getPost('password');
+// Obtén los datos enviados por POST
+$requestData = $this->request->getPost(esc(['usuario', 'password', 'activo']));
+log_message('info', $this->clase . '/' . $this->funcion . ' Línea: ' . __LINE__ .  ' - Usuario: ' . $requestData['usuario']  . $requestData['password']);
+d($requestData);
 $datosUsuario = $this->usuarios->where('usuario', $usuario)->first();
      // Variables para nuestras reglasLogin de validac.del Form
         $reglasLogin = [
             'usuario' => 'required',
             'password' => 'required',
             ];
-
-        log_message('debug', 'Funcion valida - this->validate this->reglasLogin.');
+        
+        log_message('info', $this->clase . '/' . $this->funcion . ' Línea: ' . __LINE__ . 'this->validate this->reglasLogin.');
         // if($this->request->getMethod() == "post" && $this->validate($this->reglasLogin)){
 		if (! $this->validate($reglasLogin)){
+            log_message('info', $this->clase . '/' . $this->funcion . ' Línea: ' . __LINE__ . ' - NO VALIDO LAS REGLAS.');      
 		    return redirect()->back()->withInput()->with('errors',$this->validator->getErrors());
         }
-			log_message('debug', 'Funcion valida - VALIDADAS las reglasLogin.');
+            log_message('info', $this->clase . '/' . $this->funcion . ' Línea: ' . __LINE__ . ' - Reglas Validadas correctamente.');      
             $usuario  = $this->request->getPost('usuario');
             $password = $this->request->getPost('password');
             $datosUsuario = $this->usuarios->where('usuario', $usuario)->first();
-log_message('debug', 'Funcion valida - datosUsuario: ' . $datosUsuario['password']);
+            //dd($datosUsuario);
+    // log_message('debug', 'Funcion valida - datosUsuario: ' . $datosUsuario['password']);
 	echo "<pre>";
     echo " VALIDA </br>";
 	echo  " despues del IFfunction valida" . "</br>";
@@ -302,18 +333,22 @@ log_message('debug', 'Funcion valida - datosUsuario: ' . $datosUsuario['password
 var_dump( $datosUsuario);
 echo "<pre>";
            
-			d($datosUsuario['password']);
+		//	d($datosUsuario['password']);
 echo "</pre>";
-            
+
+log_message('info', $this->clase . '/' . $this->funcion . ' Línea: ' . __LINE__ . ' - Entramos a verificar la password.');      
                 //Desciframos el Pass del Usuario
                 if(password_verify($password, $datosUsuario['password'])){
                     // creamos a la variable de session
 					d(' Usuario y Contraseñas VALIDADOS');
+                    log_message('info', $this->clase . '/' . $this->funcion . ' Línea: ' . __LINE__ . ' - Usuario/Password verificadas.');      
                     $datosSesion = [
-                        'id_usuario' => $datosUsuario['id'],
+                        'id_usuario' => $datosUsuario['id_usuario'],
                         'nombre' => $datosUsuario['nombre'],
-                        'id_caja' => $datosUsuario['id_caja'],
+                        'id_piso' => $datosUsuario['id_piso'],
                         'id_rol' => $datosUsuario['id_rol'],
+                        'id_salon' => $datosUsuario['id_salon'],
+                        'id_apartamento' => $datosUsuario['id_apartamento'],
                         //<!-- agregado  -->
                         'login' => TRUE
                     ];
@@ -328,6 +363,7 @@ echo "</pre>";
 				//return redirect()->to(base_url() . 'dash');
 					//return redirect()->to(base_url() . 'dash');
                 }else{
+                    log_message('info', $this->clase . '/' . $this->funcion . ' Línea: ' . __LINE__ . ' - Usuario/Password NO Verificadas.');      
                     $data = [
                         'error' => 'Las contraseñas no coinciden',
                     ];    
@@ -341,7 +377,7 @@ echo "</pre>";
     }
     public function cambia_password(){
         $session = session();
-        $usuario = $this->usuarios->where('id', $session->id_usuario)->first();
+        $usuario = $this->usuarios->where('id_usuario', $session->id_usuario)->first();
 
         $data = ['titulo' => 'Cambiar contraseña', 'usuario' => $usuario];   
         echo view('header');
@@ -355,7 +391,7 @@ echo "</pre>";
             $hash = password_hash($this->request->getPost('password'), PASSWORD_DEFAULT);
             $this->usuarios->update($idUsuario, ['password' => $hash]);
 
-            $usuario = $this->usuarios->where('id', $session->id_usuario)->first();
+            $usuario = $this->usuarios->where('id_usuario', $session->id_usuario)->first();
     
             $data = ['titulo' => 'Cambiar contraseña', 'usuario' => $usuario, 'mensaje' => 'Contraseña actualizada'];   
             echo view('header');
@@ -364,7 +400,7 @@ echo "</pre>";
         }else{
             // Igual al Cambia_Password()
             $session = session();
-            $usuario = $this->usuarios->where('id', $session->id_usuario)->first();
+            $usuario = $this->usuarios->where('id_usuario', $session->id_usuario)->first();
             $data = ['titulo' => 'Cambiar contraseña', 'usuario' => $usuario, 'validation' => $this->validator];  
 
             echo view('header');

@@ -32,7 +32,7 @@
             <div class="col-3">
                 <div class="card text-white bg-success">
                     <div class="card-body"> 
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i> Compras del día:   <?= number_format((int)$totalCompras['total'], 2, ",", "."); ?>
+                   <!--     <i class="fa fa-shopping-cart" aria-hidden="true"></i> Compras del día:   < ? = number_format((int)$totalCompras['total'], 2, ",", "."); ?> -->
                     </div>
                     <a class="card-footer text-white" href="<?php echo base_url(); ?>compras"> Ver detalles</a>
                 </div>
@@ -44,7 +44,7 @@
                 <div class="card text-white bg-danger">
                     <div class="card-body">
                     <i class="fa fa-truck" aria-hidden="true"></i> 
-                        Ventas del día:  <?= number_format((int)$totalCompras['total'], 2, ",", "."); ?>
+<!--                        Ventas del día:  < ? = number_format((int)$totalCompras['total'], 2, ",", "."); ?>  -->
                     </div>
                     <a class="card-footer text-white" href="<?php echo base_url(); ?>productos"> Ver detalles</a>
                 </div>

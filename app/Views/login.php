@@ -14,8 +14,8 @@ if($user_session == null){
         <meta name="author" content="" />
         <title>Reserva Hs - Login</title>
         
-        <link href="<?php echo base_url(); ?>/css/styles.css" rel="stylesheet" />
-        <link href="<?php echo base_url(); ?>/css/dataTables.bootstrap4.min.css" rel="stylesheet" />
+        <link href="<?php echo base_url(); ?>css/styles.css" rel="stylesheet" />
+        <link href="<?php echo base_url(); ?>css/dataTables.bootstrap4.min.css" rel="stylesheet" />
      <!--   <script src="<?php echo base_url(); ?>/js/all.min.js"></script> -->
         <style>
         .verticalhorizontal {
@@ -34,7 +34,7 @@ if($user_session == null){
                                 <div class="card shadow-lg border-0 rounded-lg mt-5">
                                 <div class="card-header"><h3 class="text-center font-weight-light my-4">
                                 <div class="verticalhorizontal">
-                                        <img src="<?= base_url().'/images/logo.png'; ?>" alt="centered image"/>
+                                        <img src="<?= base_url().'images/logo.png'; ?>" alt="centered image"/>
                                     </div>
     
                                 Iniciar Sesión</h3>
